@@ -26,7 +26,7 @@ function closeSidebar() {
 
 
 
-const section = document.querySelector(".wow_effect_section");
+/* const section = document.querySelector(".wow_effect_section");
 
 function createFloatingElement() {
     const element = document.createElement("div");
@@ -64,7 +64,7 @@ function createFloatingElement() {
 }
 
 // Generate floating elements continuously
-setInterval(createFloatingElement, 800);
+setInterval(createFloatingElement, 800); */
 
 
 
@@ -74,14 +74,7 @@ setInterval(createFloatingElement, 800);
 
 
 
-
-
-
-
-
-
-
-const words = [
+/* const words = [
     "رحلات سياحية",
     "اسطنبول",
     "الاسكندرية",
@@ -141,7 +134,140 @@ setInterval(changeWord, 1800); // Match the timer line animation duration
 
 // Adjust the timer width for the initial word
 updateTimerWidth();
-resetTimer(); // Start timer animation for the first word
+resetTimer(); // Start timer animation for the first word */
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* First Section Background Design */
+const canvas = document.getElementById("neon_canvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const stars = [];
+const lanterns = [];
+const starCount = 80;
+const lanternCount = 4;
+
+function createStars() {
+    for (let i = 0; i < starCount; i++) {
+        stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 2 + 1,
+            opacity: Math.random() * 0.5 + 0.5,
+            speed: Math.random() * 0.2 + 0.1
+        });
+    }
+}
+
+function createLanterns() {
+    for (let i = 0; i < lanternCount; i++) {
+        lanterns.push({
+            baseX: (canvas.width / (lanternCount + 1)) * (i + 1),
+            y: canvas.height * 0.85,
+            swingRange: Math.random() * 5 + 5, // Increase sway range
+            angle: Math.random() * Math.PI
+        });
+    }
+}
+
+let time = 0;
+
+function drawCrescentMoon() {
+    const baseX = canvas.width - 150;
+    const moonY = 100;
+    const outerRadius = 50;
+    const innerRadius = 45;
+
+    // Stronger swaying movement
+    const swayX = Math.sin(time * 0.5) * 5; // Move left-right
+    const rotationAngle = Math.sin(time * 0.5) * 0.1; // Faster rocking effect
+
+    ctx.save(); // Save current state
+    ctx.translate(baseX + swayX, moonY); // Move to the moon's center
+    ctx.rotate(rotationAngle); // Apply faster rotation
+
+    ctx.fillStyle = "#FFD700";
+    ctx.shadowColor = "#FFD700";
+
+    ctx.beginPath();
+    ctx.arc(0, 0, outerRadius, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.shadowBlur = 0;
+    ctx.globalCompositeOperation = "destination-out";
+
+    ctx.beginPath();
+    ctx.arc(20, -10, innerRadius, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.globalCompositeOperation = "source-over";
+    ctx.restore(); // Restore original state
+}
+
+function drawStars() {
+    stars.forEach((star) => {
+        ctx.globalAlpha = star.opacity;
+        ctx.fillStyle = "#FFD700";
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = "#FFD700";
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        star.opacity += star.speed * (Math.random() > 0.5 ? 1 : -1);
+        if (star.opacity < 0.3) star.opacity = 0.3;
+        if (star.opacity > 1) star.opacity = 1;
+    });
+}
+
+function drawLanterns() {
+    lanterns.forEach((lantern, index) => {
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = "#FFA500";
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = "#FFA500";
+
+        // Stronger swinging movement
+        let swayX = lantern.baseX + Math.sin(time * 0.6 + index) * lantern.swingRange;
+
+        ctx.beginPath();
+        ctx.rect(swayX - 10, lantern.y, 20, 40);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(swayX, lantern.y + 40, 10, 0, Math.PI * 2);
+        ctx.fill();
+    });
+}
+
+function animateCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    drawCrescentMoon();
+    drawStars();
+    drawLanterns();
+
+    time += 0.05; // Adjust speed
+
+    requestAnimationFrame(animateCanvas);
+}
+
+createStars();
+createLanterns();
+animateCanvas();
 
 
 
@@ -343,7 +469,20 @@ scrollToWhoAreWe = function (elementIdName) {
             behavior: "smooth"
         });
     }
+}
 
+function scrollToMiddleOfElement(className) {
+    const element = document.querySelector(`.${className}`);
+    if (element) {
+        const elementRect = element.getBoundingClientRect();
+        const absoluteElementTop = elementRect.top + window.scrollY;
+        const middlePosition = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2);
+
+        window.scrollTo({
+            top: middlePosition,
+            behavior: 'smooth'
+        });
+    }
 }
 
 
@@ -412,41 +551,41 @@ window.addEventListener('scroll', () => {
 const sectionData = [
     {
         title: 'عروض اسطنبول',
-        image_1: ['عروض-شركة-رحلة/اسطنبول/1.jpg', 'عرض اسطنبول | 5 أيام'],
-        image_2: ['عروض-شركة-رحلة/اسطنبول/2.jpg', 'عرض اسطنبول | 7 أيام'],
-        image_3: ['عروض-شركة-رحلة/اسطنبول/3.jpg', 'عرض اسطنبول | 7 أيام'],
+        image_1: ['عروض-شركة-رحلة/اسطنبول/1.jpg', 'رحلة اسطنبول | 5 أيام'],
+        image_2: ['عروض-شركة-رحلة/اسطنبول/2.jpg', 'رحلة اسطنبول | 7 أيام'],
+        image_3: ['عروض-شركة-رحلة/اسطنبول/3.jpg', 'رحلة اسطنبول | 7 أيام'],
     },
 
     {
         title: 'عروض الاسكندرية',
-        image_1: ['عروض-شركة-رحلة/الاسكندرية/1.jpg', 'عرض الاسكندرية | 5 أيام'],
+        image_1: ['عروض-شركة-رحلة/الاسكندرية/1.jpg', 'رحلة الاسكندرية | 5 أيام'],
     },
 
     {
         title: 'عروض موسكو',
-        image_1: ['عروض-شركة-رحلة/موسكو/1.jpg', 'عرض موسكو | 5 أيام'],
-        image_2: ['عروض-شركة-رحلة/موسكو/2.jpg', 'عرض موسكو | 8 أيام'],
+        image_1: ['عروض-شركة-رحلة/موسكو/1.jpg', 'رحلة موسكو | 5 أيام'],
+        image_2: ['عروض-شركة-رحلة/موسكو/2.jpg', 'رحلة موسكو | 8 أيام'],
     },
 
     {
         title: 'عروض كازاخستان',
-        image_1: ['عروض-شركة-رحلة/كازاخستان/1.jpg', 'عرض كازاخستان | 5 أيام'],
+        image_1: ['عروض-شركة-رحلة/كازاخستان/1.jpg', 'رحلة كازاخستان | 5 أيام'],
     },
 
     {
         title: 'عروض مكة المكرمة',
-        image_1: ['عروض-شركة-رحلة/مكة-المكرمة/1.jpg', 'عرض مكة المكرمة | 3 أيام'],
-        image_2: ['عروض-شركة-رحلة/مكة-المكرمة/2.jpg', 'عرض مكة المكرمة | 3 أيام'],
+        image_1: ['عروض-شركة-رحلة/مكة-المكرمة/1.jpg', 'رحلة مكة المكرمة | 3 أيام'],
+        image_2: ['عروض-شركة-رحلة/مكة-المكرمة/2.jpg', 'رحلة مكة المكرمة | 3 أيام'],
     },
 
     {
         title: 'عروض ياس ايلاند',
-        image_1: ['عروض-شركة-رحلة/ياس-ايلاند/1.jpg', 'عرض ياس ايلاند | 4 أيام'],
+        image_1: ['عروض-شركة-رحلة/ياس-ايلاند/1.jpg', 'رحلة ياس ايلاند | 4 أيام'],
     },
 
     {
         title: 'عروض يريفان & ارمينيا',
-        image_1: ['عروض-شركة-رحلة/يريفان-ارمينيا/1.jpg', 'عرض يريفان & ارمينيا | 6 أيام'],
+        image_1: ['عروض-شركة-رحلة/يريفان-ارمينيا/1.jpg', 'رحلة يريفان & ارمينيا | 6 أيام'],
     },
 ];
 
@@ -525,7 +664,7 @@ function openFullScreenImage(src, text) {
     const whatsappButton = document.createElement('a');
     whatsappButton.className = 'whatsapp_button';
     whatsappButton.innerText = 'إرسال هذا العرض';
-    whatsappButton.href = `https://wa.me/+97333007672?text=طلب%20حجز%20هذا%20العرض:%0A%0Ahttps://mohammed-website.github.io/rehlatravel/${encodeURIComponent(src)}`;
+    whatsappButton.href = `https://wa.me/+97333007672?text=💎%20طلب%20حجز%20عرض%20جديد%20💎%0A%0Aسلام%20عليكم،%20حاب%20أسأل%20عن%20عرض%0A*${encodeURIComponent(text)}*%0Aوحاب%20أعرف%20تفاصيل%20أكثر%20عن%20عروضكم%20المشابهة.%0A%0A🔗%20رابط%20صورة%20العرض:%0Ahttps://mohammed-website.github.io/rehlatravel/${encodeURIComponent(src)}%0A%0Aبإنتظار%20ردكم%20وشكرًا%20لكم`;
     fullScreenDiv.appendChild(whatsappButton);
 
     // Close on background click
