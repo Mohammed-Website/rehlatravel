@@ -187,7 +187,7 @@ let time = 0;
 
 function drawCrescentMoon() {
     const baseX = canvas.width - 150;
-    const moonY = 100;
+    const moonY = 90;
     const outerRadius = 50;
     const innerRadius = 45;
 
